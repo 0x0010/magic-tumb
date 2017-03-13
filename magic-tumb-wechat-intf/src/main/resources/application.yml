@@ -1,7 +1,14 @@
+
 server:
   port: 41000
   context-path: /
 
 logging:
   level: debug
+  path: ./${spring.application.name}.log
+
+spring:
+  application:
+    name: magic-tumblr-wechat-intf
+
 
