@@ -40,6 +40,7 @@ public class WeChatAccessController {
       TextMsg inTextMsg = SerializeUtil.textFromXml(requestBody);
       fromUser = inTextMsg.getFromUserName();
       toUser = inTextMsg.getToUserName();
+      logger.info("Received Message:{}", inTextMsg.toString());
       MsgType msgType = MsgType.fromType(inTextMsg.getMsgType());
       switch (msgType) {
         case TEXT:
@@ -55,6 +56,7 @@ public class WeChatAccessController {
           throw new RuntimeException("Unsupported message type");
       }
     } catch (Exception e) {
+      logger.error("System error", e);
       replyMsg = sysErrorTextReply(fromUser, toUser);
     }
     return replyMsg;
