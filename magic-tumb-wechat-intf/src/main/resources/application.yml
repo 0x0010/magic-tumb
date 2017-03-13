@@ -5,8 +5,7 @@ server:
 
 logging:
   level: debug
-  path: ./${spring.application.name}.log
-
+  file: ${spring.application.name}.log
 spring:
   application:
     name: magic-tumblr-wechat-intf
