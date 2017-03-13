@@ -11,3 +11,12 @@ spring:
     name: magic-tumblr-wechat-intf
 
 
+wechat:
+  appId: xxxx
+  appSecret: zzzz
+
+
+i18n:
+  message:
+    urlReceived: 视频连接生成中，您可以输入QV%s查询进度。
+    sysError: 非常抱歉，系统正在开小差，请稍后再世。

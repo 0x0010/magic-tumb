@@ -11,7 +11,8 @@ import org.springframework.context.annotation.ComponentScans;
  */
 @EnableAutoConfiguration
 @ComponentScans(value = {
-    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.controller")
+    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.controller"),
+    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.constant")
 })
 public class Application {
 
