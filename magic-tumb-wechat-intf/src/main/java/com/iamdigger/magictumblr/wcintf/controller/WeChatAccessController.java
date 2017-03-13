@@ -16,7 +16,7 @@ public class WeChatAccessController {
 
   private static Logger logger = LoggerFactory.getLogger(WeChatAccessController.class);
 
-  @RequestMapping(value = "/wechat/intf", method = RequestMethod.GET)
+  @RequestMapping(value = "/wechat/intf", method = RequestMethod.POST)
   public String portalInFirstTime(@RequestBody String requestBody) {
     logger.info("Request Body:{}", requestBody);
     return "";
