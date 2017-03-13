@@ -1,0 +1,7 @@
+server:
+  port: 41000
+  context-path: /
+
+logging:
+  level: debug
+
