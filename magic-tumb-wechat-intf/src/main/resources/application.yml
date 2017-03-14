@@ -4,12 +4,32 @@ server:
   context-path: /
 
 logging:
-  level: debug
+  level:
+    root: info
+    org.springframework.jdbc: debug
   file: ${spring.application.name}.log
 spring:
   application:
     name: magic-tumblr-wechat-intf
-
+  datasource:
+    tomcat:
+      url: jdbc:h2:~/h2/dbp;FILE_LOCK=SOCKET;SCHEMA=magic_tumblr
+      #username: magic
+      max-active: 20
+      max-idle: 10
+      min-idle: 5
+      max-wait: 10000
+      default-auto-commit: false
+      login-timeout: 5
+      remove-abandoned: true
+      remove-abandoned-timeout: 30
+      test-while-idle: true
+      test-on-borrow: true
+      validation-query: select 1
+      log-abandoned: true
+      log-validation-errors: true
+      driver-class-name: org.h2.Driver
+    username: magic
 
 wechat:
   appId: xxxx
@@ -18,5 +38,8 @@ wechat:
 
 i18n:
   message:
-    urlReceived: 视频连接生成中，您可以输入QV%s查询进度。
-    sysError: 非常抱歉，系统正在开小差，请稍后再世。
+    urlReceived: 魔法工厂正在解析URL....\n友情提醒：发送Q+%s可查询进度。
+    sysError: 非常抱歉，系统正在开小差，过会再试试吧。
+
+  exception:
+    e0001: asdfasdfa

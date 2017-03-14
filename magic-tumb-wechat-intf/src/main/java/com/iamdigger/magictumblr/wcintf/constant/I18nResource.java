@@ -14,8 +14,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 public class I18nResource {
   private Map<String, String> message = new HashMap<>();
+  private Map<String, String> exception = new HashMap<>();
 
   public String getMessage(String msgKey) {
     return message.get(msgKey);
+  }
+
+  public String getException(String errorCode) {
+    return exception.get(errorCode);
   }
 }
