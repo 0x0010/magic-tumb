@@ -1,9 +1,13 @@
 package com.iamdigger.magictumblr.wcintf;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author Sam
@@ -16,9 +20,15 @@ import org.springframework.context.annotation.ComponentScans;
     @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.service"),
     @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.job")
 })
+@EnableScheduling
 public class Application {
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
+  }
+
+  @Bean(name = "MagicTaskScheduler")
+  public Executor taskScheduler() {
+    return Executors.newScheduledThreadPool(10);
   }
 }

@@ -14,10 +14,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,7 +29,37 @@ public class AssetFilesScanner {
   @Resource
   private MagicAssetService magicAssetService;
 
-  @Bean
+  @Scheduled(fixedDelay = 1000)
+  public void scanAssetFiles() {
+    Set<String> assetFiles = listTxFiles();
+    if (null == assetFiles || assetFiles.size() <= 0) {
+      return;
+    }
+    for (String assetFile : assetFiles) {
+      BufferedReader reader = null;
+      try {
+        Path assetFilePath = new File(
+            String.format("%s/%s", RuntimeUtil.getRunningPath(), assetFile)).toPath();
+        reader = Files.newBufferedReader(assetFilePath, Charset.forName("UTF-8"));
+        String assetCode = reader.readLine();
+        String url = reader.readLine();
+        magicAssetService.createMagicAsset(assetCode, url);
+        Files.deleteIfExists(assetFilePath);
+        logger.info("SAVED!! URL[{}], AssetCode[{}]", url, assetCode);
+      } catch (IOException ignore) {
+        logger.error(String.format("Read asset file %s failed.", assetFile), ignore);
+      } finally {
+        try {
+          if (null != reader) {
+            reader.close();
+          }
+        } catch (IOException ignore) {
+        }
+      }
+    }
+  }
+
+  /*@Bean
   public TaskExecutor scannerExecutor() {
     return new SimpleAsyncTaskExecutor("AFScanner");
   }
@@ -77,7 +104,7 @@ public class AssetFilesScanner {
           }
       );
     };
-  }
+  }*/
 
 
   private Set<String> listTxFiles() {
