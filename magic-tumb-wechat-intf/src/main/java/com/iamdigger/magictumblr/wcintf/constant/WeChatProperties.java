@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @ConfigurationProperties(prefix = "wechat")
 public class WeChatProperties {
+
   private String appId;
   private String appSecret;
 }

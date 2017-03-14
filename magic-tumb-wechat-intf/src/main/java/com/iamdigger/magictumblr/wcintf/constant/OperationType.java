@@ -17,14 +17,15 @@ public enum OperationType {
   // Help
   H('H');
 
+  char operation;
+
   OperationType(char ch) {
     this.operation = ch;
   }
-  char operation;
 
   public static OperationType of(char ch) {
-    for(OperationType operationType : OperationType.values()) {
-      if(ch == operationType.getOperation()) {
+    for (OperationType operationType : OperationType.values()) {
+      if (ch == operationType.getOperation()) {
         return operationType;
       }
     }

@@ -8,7 +8,9 @@ import lombok.Getter;
  */
 @Getter
 public class MagicException extends RuntimeException {
+
   private String errorMsg;
+
   public MagicException(String errorMsg) {
     super(errorMsg);
     this.errorMsg = errorMsg;

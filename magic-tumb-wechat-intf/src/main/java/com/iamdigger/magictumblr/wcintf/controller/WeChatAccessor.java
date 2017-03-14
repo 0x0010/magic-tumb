@@ -30,17 +30,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class WeChatAccessor {
 
   private static Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of("GMT+8")));
-
+  private static Logger logger = LoggerFactory.getLogger(WeChatAccessor.class);
   @Resource(type = I18nResource.class)
   private I18nResource i18nResource;
-
   @Resource(type = MagicAssetService.class)
   private MagicAssetService magicAssetService;
-
   @Resource
   private MagicAssetFileService magicAssetFileService;
-
-  private static Logger logger = LoggerFactory.getLogger(WeChatAccessor.class);
 
   @RequestMapping(value = "/wechat/intf", method = RequestMethod.POST)
   @ResponseBody
@@ -93,7 +89,7 @@ public class WeChatAccessor {
       String dispatchResult = "";
       switch (ot) {
         case G:
-          if(inText.length() <= 2) {
+          if (inText.length() <= 2) {
             throw new MagicException(i18nResource.getException("e0001"));
           }
           String assetCode = magicAssetFileService.saveToDisk(inText.substring(2, inText.length()));
@@ -108,10 +104,10 @@ public class WeChatAccessor {
       }
       return dispatchResult;
     } catch (RuntimeException re) {
-      if(re instanceof MagicException) {
+      if (re instanceof MagicException) {
         return ((MagicException) re).getErrorMsg();
       }
     }
-      return "魔法君已收到消息。";
+    return "魔法君已收到消息。";
   }
 }

@@ -8,13 +8,14 @@ import com.thoughtworks.xstream.XStream;
  * @since 3.0.0
  */
 public class SerializeUtil {
-  private static XStream textXStream = null;
+
   private final static Object IN_TEXT_LOCK = new Object();
+  private static XStream textXStream = null;
 
   private static void initTextStream() {
-    if(null == textXStream) {
+    if (null == textXStream) {
       synchronized (IN_TEXT_LOCK) {
-        if(null == textXStream) {
+        if (null == textXStream) {
           textXStream = new XStream();
           textXStream.alias("xml", TextMsg.class);
           textXStream.aliasField("ToUserName", TextMsg.class, "toUserName");

@@ -1,6 +1,5 @@
 package com.iamdigger.magictumblr.wcintf.bean;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,6 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class TextMsg {
+
   private String toUserName;
   private String fromUserName;
   private Long createTime;

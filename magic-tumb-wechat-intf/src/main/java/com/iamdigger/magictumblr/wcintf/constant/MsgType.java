@@ -10,18 +10,19 @@ import lombok.Getter;
 public enum MsgType {
   TEXT("text");
 
+  String type;
+
   MsgType(String type) {
     this.type = type;
   }
-  String type;
 
   public static MsgType fromType(String type) {
     MsgType[] msgTypes = MsgType.values();
-    for(MsgType msgType : msgTypes) {
-      if(msgType.getType().equals(type)) {
+    for (MsgType msgType : msgTypes) {
+      if (msgType.getType().equals(type)) {
         return msgType;
       }
     }
-    throw new RuntimeException("Unsupported message type " + type );
+    throw new RuntimeException("Unsupported message type " + type);
   }
 }

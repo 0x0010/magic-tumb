@@ -30,7 +30,6 @@ spring:
       log-validation-errors: true
       driver-class-name: org.h2.Driver
     username: magic
-
 wechat:
   appId: xxxx
   appSecret: zzzz
@@ -43,3 +42,4 @@ i18n:
 
   exception:
     e0001: asdfasdfa
+    e0002: 好气呀 -_-|| 魔法汤工厂暂时不可用。

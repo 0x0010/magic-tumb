@@ -10,5 +10,6 @@ public interface MagicAssetService {
 
   MagicAssetDO queryMagicAsset(String assetId);
 
+  void createMagicAsset(String assetId, String url);
 
 }

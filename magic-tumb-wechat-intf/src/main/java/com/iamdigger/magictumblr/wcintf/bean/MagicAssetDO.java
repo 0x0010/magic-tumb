@@ -13,9 +13,11 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MagicAssetDO {
+
   private Long id;
   private String assetId;
-  private String assetCode;
+  private String videoCode;
+  private String imageCode;
   private String urlHash;
   private String originalUrl;
   private Timestamp createTime;

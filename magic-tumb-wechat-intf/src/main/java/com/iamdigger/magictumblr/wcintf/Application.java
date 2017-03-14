@@ -13,7 +13,8 @@ import org.springframework.context.annotation.ComponentScans;
 @ComponentScans(value = {
     @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.controller"),
     @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.constant"),
-    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.service")
+    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.service"),
+    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.job")
 })
 public class Application {
 

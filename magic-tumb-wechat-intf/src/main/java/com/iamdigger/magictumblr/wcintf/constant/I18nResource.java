@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "i18n")
 @Getter
 public class I18nResource {
+
   private Map<String, String> message = new HashMap<>();
   private Map<String, String> exception = new HashMap<>();
 
