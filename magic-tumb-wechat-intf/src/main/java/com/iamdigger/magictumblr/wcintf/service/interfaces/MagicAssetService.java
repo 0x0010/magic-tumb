@@ -1,6 +1,7 @@
 package com.iamdigger.magictumblr.wcintf.service.interfaces;
 
 import com.iamdigger.magictumblr.wcintf.bean.MagicAssetDO;
+import java.util.List;
 
 /**
  * @author Sam
@@ -12,4 +13,7 @@ public interface MagicAssetService {
 
   void createMagicAsset(String assetId, String url);
 
+  List<MagicAssetDO> queryAsset(Integer state, Integer start, Integer limit);
+
+  void updateAssetState(Long id, Integer state);
 }

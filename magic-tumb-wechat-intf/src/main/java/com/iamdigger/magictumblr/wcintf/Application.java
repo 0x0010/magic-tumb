@@ -1,13 +1,14 @@
 package com.iamdigger.magictumblr.wcintf;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 /**
  * @author Sam
@@ -27,8 +28,22 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 
-  @Bean(name = "MagicTaskScheduler")
+  @Bean(name = "MTS")
   public Executor taskScheduler() {
-    return Executors.newScheduledThreadPool(10);
+    ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+    scheduler.setThreadNamePrefix("MTS");
+    scheduler.setPoolSize(2);
+    return scheduler;
+  }
+
+  @Bean(name = "MTE")
+  public Executor taskExecutor() {
+    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+    executor.setThreadNamePrefix("MTE");
+    executor.setCorePoolSize(5);
+    executor.setMaxPoolSize(20);
+    executor.setKeepAliveSeconds(10);
+    executor.setQueueCapacity(100);
+    return executor;
   }
 }

@@ -8,7 +8,8 @@ import lombok.Getter;
  */
 @Getter
 public enum AssetState {
-  INIT(1, "初始化"), SUCCESS(2, "解析成功"), FAILED(3, "解析失败");
+
+  INIT(1, "初始化"),  SUCCESS(2, "解析成功"),  FAILED(3, "解析失败"), PROCESSING(4, "正在处理") ;
 
   Integer state;
   String desc;

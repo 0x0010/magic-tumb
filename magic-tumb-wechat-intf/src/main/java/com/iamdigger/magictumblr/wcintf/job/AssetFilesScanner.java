@@ -29,7 +29,7 @@ public class AssetFilesScanner {
   @Resource
   private MagicAssetService magicAssetService;
 
-  @Scheduled(fixedDelay = 1000)
+  @Scheduled(fixedDelay = 2000)
   public void scanAssetFiles() {
     Set<String> assetFiles = listTxFiles();
     if (null == assetFiles || assetFiles.size() <= 0) {

@@ -7,6 +7,7 @@ import com.iamdigger.magictumblr.wcintf.utils.RuntimeUtil;
 import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -29,12 +30,9 @@ public class MagicAssetServiceImpl implements MagicAssetService {
         "select asset_id, video_code, original_url, create_time, state from magic_asset where asset_id = ?",
         new Object[]{assetId},
         (ResultSet rs) -> {
-          if (null != rs && rs.next()) {
-            MagicAssetDO magicAsset = new MagicAssetDO();
-            magicAsset.setVideoCode(rs.getString(2));
-            return magicAsset;
-          }
-          return null;
+          MagicAssetDO magicAsset = new MagicAssetDO();
+          magicAsset.setVideoCode(rs.getString(2));
+          return magicAsset;
         });
     return null != asset ? asset : null;
   }
@@ -43,11 +41,31 @@ public class MagicAssetServiceImpl implements MagicAssetService {
   @Override
   public void createMagicAsset(String assetId, String url) {
     String sql = "insert into magic_asset (asset_id, url_hash, original_url, create_time, state) values (?,?,?,?,?)";
-    jdbcTemplate.update(sql,
-        assetId,
+    jdbcTemplate.update(sql, assetId,
         DigestUtils.md5DigestAsHex(url.getBytes(Charset.forName("UTF-8"))),
         url,
         new Timestamp(RuntimeUtil.getCurrentDateTime().getTime()),
         AssetState.INIT.getState());
+  }
+
+  @Override
+  public List<MagicAssetDO> queryAsset(Integer state, Integer start, Integer limit) {
+    String sql = "SELECT id, asset_id, original_url FROM MAGIC_ASSET where state = ? order by asset_id limit ?, ?";
+    return jdbcTemplate.query(sql, new Object[]{state, start, limit},
+        (ResultSet rs, int rowNum) -> {
+          MagicAssetDO mad = new MagicAssetDO();
+          mad.setId(rs.getLong(1));
+          mad.setAssetId(rs.getString(2));
+          mad.setOriginalUrl(rs.getString(3));
+          return mad;
+        }
+    );
+  }
+
+  @Transactional
+  @Override
+  public void updateAssetState(Long id, Integer state) {
+    String sql = "update MAGIC_ASSET set state = ? where id = ?";
+    jdbcTemplate.update(sql, state, id);
   }
 }
