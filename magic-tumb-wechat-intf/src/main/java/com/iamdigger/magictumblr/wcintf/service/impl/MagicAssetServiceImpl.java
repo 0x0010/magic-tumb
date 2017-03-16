@@ -79,7 +79,7 @@ public class MagicAssetServiceImpl implements MagicAssetService {
   @Transactional
   @Override
   public void updateAssetVideoCode(Long id, String videoCode) {
-    String sql = "upate magic_asset set video_code = ? where id = ?";
+    String sql = "update magic_asset set video_code = ? where id = ?";
     jdbcTemplate.update(sql, videoCode, id);
   }
 }
