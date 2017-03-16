@@ -139,7 +139,7 @@ public class WeChatAccessor {
       if (re instanceof MagicException) {
         return ((MagicException) re).getErrorMsg();
       }
-      logger.error("", re);
+      logger.error(re.getMessage());
     }
     return "魔法君已收到消息。";
   }
