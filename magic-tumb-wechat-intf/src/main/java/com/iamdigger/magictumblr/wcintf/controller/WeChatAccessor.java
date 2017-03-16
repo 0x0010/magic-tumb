@@ -1,6 +1,8 @@
 package com.iamdigger.magictumblr.wcintf.controller;
 
+import com.iamdigger.magictumblr.wcintf.bean.MagicAssetDO;
 import com.iamdigger.magictumblr.wcintf.bean.TextMsg;
+import com.iamdigger.magictumblr.wcintf.constant.AssetState;
 import com.iamdigger.magictumblr.wcintf.constant.I18nResource;
 import com.iamdigger.magictumblr.wcintf.constant.MsgType;
 import com.iamdigger.magictumblr.wcintf.constant.OperationType;
@@ -33,8 +35,10 @@ public class WeChatAccessor {
   private static Logger logger = LoggerFactory.getLogger(WeChatAccessor.class);
   @Resource(type = I18nResource.class)
   private I18nResource i18nResource;
-  @Resource(type = MagicAssetService.class)
+
+  @Resource
   private MagicAssetService magicAssetService;
+
   @Resource
   private MagicAssetFileService magicAssetFileService;
 
@@ -90,12 +94,40 @@ public class WeChatAccessor {
       switch (ot) {
         case G:
           if (inText.length() <= 2) {
-            throw new MagicException(i18nResource.getException("e0001"));
+            throw new MagicException(String.format(i18nResource.getException("e0001"), inText));
           }
           String assetCode = magicAssetFileService.saveToDisk(inText.substring(2, inText.length()));
           dispatchResult = String.format(i18nResource.getMessage("urlReceived"), assetCode);
           break;
         case Q:
+          if (inText.length() <= 2) {
+            throw new MagicException(String.format(i18nResource.getException("e0001"), inText));
+          }
+          MagicAssetDO mad = magicAssetService.queryMagicAsset(inText.substring(2, inText.length()));
+          if(null != mad) {
+            AssetState assetState = AssetState.valueOf(mad.getState());
+            switch (assetState) {
+              case SUCCESS:
+                dispatchResult = String.format(i18nResource.getMessage("videoCodeFound"), mad.getVideoCode());
+                break;
+              case FAILED:
+                dispatchResult = i18nResource.getMessage("urlParseFailed");
+                break;
+              case PROCESSING:
+                dispatchResult = i18nResource.getMessage("underProcess");
+                break;
+              case UNSUPPORTED_URL:
+                dispatchResult = String.format(i18nResource.getMessage("unsupportedUrl"), mad.getOriginalUrl());
+                break;
+              case INIT:
+                dispatchResult = i18nResource.getMessage("waitForParse");
+                break;
+              default:
+                dispatchResult = i18nResource.getMessage("dizzy");
+            }
+          } else {
+            dispatchResult = i18nResource.getMessage("noAssetFound");
+          }
           break;
         case H:
           break;
@@ -107,6 +139,7 @@ public class WeChatAccessor {
       if (re instanceof MagicException) {
         return ((MagicException) re).getErrorMsg();
       }
+      logger.error("", re);
     }
     return "魔法君已收到消息。";
   }

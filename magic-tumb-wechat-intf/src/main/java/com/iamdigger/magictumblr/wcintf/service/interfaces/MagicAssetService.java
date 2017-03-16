@@ -16,4 +16,6 @@ public interface MagicAssetService {
   List<MagicAssetDO> queryAsset(Integer state, Integer start, Integer limit);
 
   void updateAssetState(Long id, Integer state);
+
+  void updateAssetVideoCode(Long id, String videoCode);
 }

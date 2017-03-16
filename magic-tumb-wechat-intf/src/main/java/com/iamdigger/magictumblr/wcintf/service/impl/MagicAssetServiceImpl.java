@@ -30,9 +30,16 @@ public class MagicAssetServiceImpl implements MagicAssetService {
         "select asset_id, video_code, original_url, create_time, state from magic_asset where asset_id = ?",
         new Object[]{assetId},
         (ResultSet rs) -> {
-          MagicAssetDO magicAsset = new MagicAssetDO();
-          magicAsset.setVideoCode(rs.getString(2));
-          return magicAsset;
+          if (rs.first()) {
+            MagicAssetDO magicAsset = new MagicAssetDO();
+            magicAsset.setVideoCode(rs.getString(2));
+            magicAsset.setAssetId(rs.getString(1));
+            magicAsset.setOriginalUrl(rs.getString(3));
+            magicAsset.setCreateTime(rs.getTimestamp(4));
+            magicAsset.setState(rs.getInt(5));
+            return magicAsset;
+          }
+          return null;
         });
     return null != asset ? asset : null;
   }
@@ -67,5 +74,12 @@ public class MagicAssetServiceImpl implements MagicAssetService {
   public void updateAssetState(Long id, Integer state) {
     String sql = "update MAGIC_ASSET set state = ? where id = ?";
     jdbcTemplate.update(sql, state, id);
+  }
+
+  @Transactional
+  @Override
+  public void updateAssetVideoCode(Long id, String videoCode) {
+    String sql = "upate magic_asset set video_code = ? where id = ?";
+    jdbcTemplate.update(sql, videoCode, id);
   }
 }

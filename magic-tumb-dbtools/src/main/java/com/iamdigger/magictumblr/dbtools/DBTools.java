@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 import java.util.Properties;
 import org.h2.Driver;
 import org.h2.tools.DeleteDbFiles;
@@ -24,7 +23,6 @@ public class DBTools {
   private static Properties dbProp = new Properties();
 
   public static void main(String[] args) throws IOException {
-    //System.out.println(Long.toHexString(System.currentTimeMillis()).toUpperCase());
     if (null != args && args.length == 1) {
       dbProp.load(DBTools.class.getResourceAsStream("/db.properties"));
       dbName = dbProp.getProperty("db.name");
@@ -49,12 +47,11 @@ public class DBTools {
     } else {
       System.out.println("No operation specified");
     }
-
-    System.out.println(Arrays.toString(args));
   }
 
   private static void delete() {
     DeleteDbFiles.execute(dbPath, dbName, false);
+    System.out.println("database deleted.");
   }
 
   private static void init() {
@@ -83,6 +80,7 @@ public class DBTools {
           statement.execute(sqlLine);
         }
       }
+      System.out.println("database created;");
     } finally {
       if (null != statement) {
         statement.close();
