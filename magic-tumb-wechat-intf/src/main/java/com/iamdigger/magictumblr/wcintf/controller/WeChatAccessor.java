@@ -108,7 +108,7 @@ public class WeChatAccessor {
       } else {
         // 非指令文本，直接写入文件，等待入库
         magicAssetFileService.saveToDisk(committer, inText);
-        return "测试一下换行符\n看看能不能换行";
+        return i18nResource.getMessage("contentReceived");
       }
 
 /*

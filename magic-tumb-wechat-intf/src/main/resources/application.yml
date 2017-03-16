@@ -36,7 +36,7 @@ wechat:
 
 i18n:
   message:
-    contentReceived: YOHOO！请求已收到，魔法汤儿正在努力解析中，稍等片刻。\\n过那么一小会会儿，回复Q(q)查询结果哟。
+    contentReceived: YOHOO！请求已收到，魔法汤儿正在努力解析中，稍等片刻。 \\n 过那么一小会会儿，回复Q(q)查询结果哟。
     urlReceived: 魔法汤婆婆正在解析URL....\n友情提醒：发送Q+%s可查询进度。
     sysError: 非常抱歉，系统正在开小差，过会再试试吧。
     noAssetFound: 魔法汤找了半天，仍然一无所获。I am so sad!
