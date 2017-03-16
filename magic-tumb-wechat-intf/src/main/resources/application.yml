@@ -49,7 +49,7 @@ i18n:
     queryEmpty: 其实我不想说你什么都没查到。发送"帮助"或者"help"，GET使用魔法汤的正确姿势。
     assetFound: 魔法老师准备划重点了，做好笔记，老铁\\n%s
     assetResultTemplate: 时间：%s\\n内容：%s\\n结果：%s
-    assetSuprise: 惊喜：%s
+    assetSurprise: 惊喜：%s
   exception:
     e0001: 啊喔!?! 魔法汤四目紧盯指令[%s]，紧锁的眉头间蹦出仨字「什么鬼」。
     e0002: 好气呀 -_-|| 魔法汤工厂暂时不可用。

@@ -101,14 +101,14 @@ public class WeChatAccessor {
           sb.append(String.format(i18nResource.getMessage("assetResultTemplate"),
               magicAssetDO.getCreateTime(), magicAssetDO.getAssetContent(), state.getDesc()));
           if(state == AssetState.SUCCESS) {
-            sb.append(String.format(i18nResource.getMessage("assetSuprise"), magicAssetDO.getVideoCode()));
+            sb.append(String.format(i18nResource.getMessage("assetSurprise"), magicAssetDO.getVideoCode()));
           }
         }
         return String.format(i18nResource.getMessage("assetFound"), sb.toString());
       } else {
         // 非指令文本，直接写入文件，等待入库
         magicAssetFileService.saveToDisk(committer, inText);
-        return i18nResource.getMessage("contentReceived");
+        return "测试一下换行符\n看看能不能换行";
       }
 
 /*
