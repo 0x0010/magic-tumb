@@ -4,6 +4,8 @@ import com.iamdigger.magictumblr.wcintf.bean.MagicAssetDO;
 import com.iamdigger.magictumblr.wcintf.constant.AssetState;
 import com.iamdigger.magictumblr.wcintf.service.interfaces.MagicAssetService;
 import com.iamdigger.magictumblr.wcintf.utils.HttpUtil;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
@@ -34,12 +36,9 @@ public class AssetCodeSpider {
       logger.info("Find {} init assets.", initAssets.size());
       for (MagicAssetDO initAsset : initAssets) {
         assetService.updateAssetState(initAsset.getId(), AssetState.PROCESSING.getState());
-        logger.info("Asset[{}] update state to [{}]", initAsset.getOriginalUrl(),
-            AssetState.PROCESSING.getDesc());
-        executor
-            .submit(new SpiderTask(initAsset.getId(), initAsset.getOriginalUrl(), assetService));
-        logger.info("Asset[{}] has been submitted to MTE", initAsset.getOriginalUrl(),
-            AssetState.PROCESSING.getDesc());
+        logger.info("Asset[{}] update state to [{}]", initAsset.getAssetContent(), AssetState.PROCESSING.getDesc());
+        executor.submit(new SpiderTask(initAsset.getId(), initAsset.getAssetContent(), assetService));
+        logger.info("Asset[{}] submit to MTE", initAsset.getAssetContent(), AssetState.PROCESSING.getDesc());
       }
     }
   }
@@ -47,20 +46,37 @@ public class AssetCodeSpider {
   private static class SpiderTask implements Runnable {
 
     private Long id;
-    private String url;
+    private String assetContent;
     private MagicAssetService assetService;
 
-    SpiderTask(Long id, String url, MagicAssetService assetService) {
+    SpiderTask(Long id, String assetContent, MagicAssetService assetService) {
       this.id = id;
-      this.url = url;
+      this.assetContent = assetContent;
       this.assetService = assetService;
     }
 
     @Override
     public void run() {
       AssetState state = AssetState.SUCCESS;
+
+
+      // 是否url
+      URL url = null;
       try {
-        String urlContent = HttpUtil.doGet(url);
+        url = new URL(this.assetContent);
+      } catch (MalformedURLException e) {
+        state = AssetState.NOT_URL;
+      }
+
+      if(null == url) {
+        assetService.updateAssetState(id, state.getState());
+        logger.info("Asset[{}] update state to [{}]", assetContent, state.getDesc());
+        return;
+      }
+
+      // 是URL，尝试解析
+      try {
+        String urlContent = HttpUtil.doGet(assetContent);
         int ogImageStart = urlContent.indexOf("<meta property=\"og:image\"");
         int ogImageMetaEnd = urlContent.indexOf("<meta", ogImageStart + 1);
         if (ogImageStart > 0 && ogImageMetaEnd > 0 && ogImageMetaEnd > ogImageStart) {
@@ -69,15 +85,13 @@ public class AssetCodeSpider {
           logger.info("Get video code [{}] from Url[{}]", videoCode, url);
         } else {
           state = AssetState.UNSUPPORTED_URL;
-          logger.info("Unsupported url [{}]", url);
         }
       } catch (Exception e) {
         state = AssetState.FAILED;
         logger.error(String.format("Parse URL[%s] failed.", url), e);
-      } finally {
-        assetService.updateAssetState(id, state.getState());
-        logger.info("Asset[{}] update state to [{}]", url, state.getDesc());
       }
+      assetService.updateAssetState(id, state.getState());
+      logger.info("Asset[{}] update state to [{}]", url, state.getDesc());
     }
   }
 }

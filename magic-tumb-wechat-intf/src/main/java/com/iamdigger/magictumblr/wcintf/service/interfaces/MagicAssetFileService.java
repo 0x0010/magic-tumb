@@ -6,5 +6,5 @@ package com.iamdigger.magictumblr.wcintf.service.interfaces;
  */
 public interface MagicAssetFileService {
 
-  String saveToDisk(String url);
+  String saveToDisk(String committer, String content);
 }

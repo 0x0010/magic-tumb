@@ -38,14 +38,14 @@ public class AssetFilesScanner {
     for (String assetFile : assetFiles) {
       BufferedReader reader = null;
       try {
-        Path assetFilePath = new File(
-            String.format("%s/%s", RuntimeUtil.getRunningPath(), assetFile)).toPath();
+        Path assetFilePath = new File(String.format("%s/%s", RuntimeUtil.getRunningPath(), assetFile)).toPath();
         reader = Files.newBufferedReader(assetFilePath, Charset.forName("UTF-8"));
-        String assetCode = reader.readLine();
+        String assetId = reader.readLine();
+        String committer = reader.readLine();
         String url = reader.readLine();
-        magicAssetService.createMagicAsset(assetCode, url);
+        magicAssetService.createMagicAsset(assetId, committer, url);
         Files.deleteIfExists(assetFilePath);
-        logger.info("SAVED!! URL[{}], AssetCode[{}]", url, assetCode);
+        logger.info("SAVED!! content[{}], assetId[{}], committer[{}]", url, assetId, committer);
       } catch (IOException ignore) {
         logger.error(String.format("Read asset file %s failed.", assetFile), ignore);
       } finally {
@@ -58,54 +58,6 @@ public class AssetFilesScanner {
       }
     }
   }
-
-  /*@Bean
-  public TaskExecutor scannerExecutor() {
-    return new SimpleAsyncTaskExecutor("AFScanner");
-  }
-
-  @Bean
-  public CommandLineRunner schedulingScanner(TaskExecutor taskExecutor) {
-    return (String... args) -> {
-      taskExecutor.execute(
-          () -> {
-            while (true) {
-              Set<String> assetFiles = listTxFiles();
-              if (null == assetFiles || assetFiles.size() <= 0) {
-                continue;
-              }
-              for (String assetFile : assetFiles) {
-                BufferedReader reader = null;
-                try {
-                  Path assetFilePath = new File(
-                      String.format("%s/%s", RuntimeUtil.getRunningPath(), assetFile)).toPath();
-                  reader = Files.newBufferedReader(assetFilePath, Charset.forName("UTF-8"));
-                  String assetCode = reader.readLine();
-                  String url = reader.readLine();
-                  magicAssetService.createMagicAsset(assetCode, url);
-                  Files.deleteIfExists(assetFilePath);
-                  logger.info("SAVED!! URL[{}], AssetCode[{}]", url, assetCode);
-                } catch (IOException ignore) {
-                  logger.error(String.format("Read asset file %s failed.", assetFile), ignore);
-                } finally {
-                  try {
-                    if (null != reader) {
-                      reader.close();
-                    }
-                  } catch (IOException ignore) {
-                  }
-                }
-              }
-              try {
-                Thread.sleep(1000);
-              } catch (InterruptedException ignore) {
-              }
-            }
-          }
-      );
-    };
-  }*/
-
 
   private Set<String> listTxFiles() {
     try {

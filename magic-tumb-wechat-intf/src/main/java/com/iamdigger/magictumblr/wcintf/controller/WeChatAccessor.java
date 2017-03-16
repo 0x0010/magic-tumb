@@ -5,13 +5,13 @@ import com.iamdigger.magictumblr.wcintf.bean.TextMsg;
 import com.iamdigger.magictumblr.wcintf.constant.AssetState;
 import com.iamdigger.magictumblr.wcintf.constant.I18nResource;
 import com.iamdigger.magictumblr.wcintf.constant.MsgType;
-import com.iamdigger.magictumblr.wcintf.constant.OperationType;
 import com.iamdigger.magictumblr.wcintf.exception.MagicException;
 import com.iamdigger.magictumblr.wcintf.service.interfaces.MagicAssetFileService;
 import com.iamdigger.magictumblr.wcintf.service.interfaces.MagicAssetService;
 import com.iamdigger.magictumblr.wcintf.utils.SerializeUtil;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class WeChatAccessor {
   private I18nResource i18nResource;
 
   @Resource
-  private MagicAssetService magicAssetService;
+  MagicAssetService magicAssetService;
 
   @Resource
   private MagicAssetFileService magicAssetFileService;
@@ -56,7 +56,7 @@ public class WeChatAccessor {
       TextMsg textReplyMsg = buildNoContentText(toUser, fromUser);
       switch (msgType) {
         case TEXT:
-          textReplyMsg.setContent(dispatchTextMsg(inTextMsg.getContent()));
+          textReplyMsg.setContent(dispatchTextMsg(inTextMsg.getFromUserName(), inTextMsg.getContent()));
           break;
         default:
           throw new RuntimeException("Unsupported message type");
@@ -84,12 +84,35 @@ public class WeChatAccessor {
     return SerializeUtil.textToXml(textReplyMsg);
   }
 
-  private String dispatchTextMsg(String inText) {
+  private String dispatchTextMsg(String committer, String inText) {
     // 预处理文本：删除消息前后空白字符
     inText = inText.trim();
-    char ch = inText.charAt(0);
     try {
-      OperationType ot = OperationType.of(ch);
+      // 查询
+      if(inText.equalsIgnoreCase("q")) {
+        List<MagicAssetDO> magicAssetDOS = magicAssetService.queryAssetByCommitter(committer, 0, 5);
+        if(null == magicAssetDOS || magicAssetDOS.size() <= 0) {
+          return i18nResource.getMessage("queryEmpty");
+        }
+        StringBuilder sb = new StringBuilder();
+        for(MagicAssetDO magicAssetDO : magicAssetDOS) {
+          AssetState state = AssetState.valueOf(magicAssetDO.getState());
+          sb.append("\n");
+          sb.append(String.format(i18nResource.getMessage("assetResultTemplate"),
+              magicAssetDO.getCreateTime(), magicAssetDO.getAssetContent(), state.getDesc()));
+          if(state == AssetState.SUCCESS) {
+            sb.append(String.format(i18nResource.getMessage("assetSuprise"), magicAssetDO.getVideoCode()));
+          }
+        }
+        return String.format(i18nResource.getMessage("assetFound"), sb.toString());
+      } else {
+        // 非指令文本，直接写入文件，等待入库
+        magicAssetFileService.saveToDisk(committer, inText);
+        return i18nResource.getMessage("contentReceived");
+      }
+
+/*
+      OperationType ot = OperationType.of("");
       String dispatchResult = "";
       switch (ot) {
         case G:
@@ -134,12 +157,12 @@ public class WeChatAccessor {
         default:
           break;
       }
-      return dispatchResult;
+      return dispatchResult;*/
     } catch (RuntimeException re) {
       if (re instanceof MagicException) {
         return ((MagicException) re).getErrorMsg();
       }
     }
-    return "魔法君已收到消息。";
+    return i18nResource.getMessage("dizzy");
   }
 }

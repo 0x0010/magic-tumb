@@ -9,7 +9,12 @@ import lombok.Getter;
 @Getter
 public enum AssetState {
 
-  INIT(1, "初始化"),  SUCCESS(2, "解析成功"),  FAILED(3, "解析失败"), PROCESSING(4, "正在处理"), UNSUPPORTED_URL(5, "不支持的URL");
+  INIT(1, "迫不及待地等待被处理。。。"),
+  SUCCESS(2, "功夫不负有心人，长使英雄泪满襟呐！"),
+  FAILED(3, "我说我解析失败了，你信吗？"),
+  PROCESSING(4, "正在处理"),
+  UNSUPPORTED_URL(5, "暂不支持此URL的解析，你懂的。"),
+  NOT_URL(6, "别逗，这就不是个URL！");
 
   Integer state;
   String desc;

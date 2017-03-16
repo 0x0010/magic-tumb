@@ -1,6 +1,7 @@
 package com.iamdigger.magictumblr.dbtools;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -71,12 +72,11 @@ public class DBTools {
     try {
       connection = tryToGetConnection();
       statement = connection.createStatement();
-
-      bufferedReader = new BufferedReader(
-          new InputStreamReader(DBTools.class.getResourceAsStream("/schema.sql")));
+      bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("./schema.sql")));
       String sqlLine;
       while (null != (sqlLine = bufferedReader.readLine())) {
         if (!isEmpty(sqlLine) && !sqlLine.trim().startsWith("--")) {
+          System.out.println(sqlLine);
           statement.execute(sqlLine);
         }
       }

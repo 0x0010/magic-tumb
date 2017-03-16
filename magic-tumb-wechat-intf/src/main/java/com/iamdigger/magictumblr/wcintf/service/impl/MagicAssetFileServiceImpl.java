@@ -9,11 +9,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Locale;
-import java.util.Random;
+import java.util.UUID;
+import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,30 +26,27 @@ public class MagicAssetFileServiceImpl implements MagicAssetFileService {
   @Resource
   private I18nResource i18nResource;
 
-  private DateFormatter dateFormatter = new DateFormatter("yyMMddHHmmssSSS");
-  private Random random = new Random();
-
   @Override
-  public String saveToDisk(String url) {
-    String assetCode =
-        dateFormatter.print(RuntimeUtil.getCurrentDateTime(), Locale.CHINA) + (random.nextInt(10000)
-            + 10000);
+  public String saveToDisk(String committer, String content) {
+    String assetId = UUID.randomUUID().toString().replaceAll(Pattern.quote("-"), "");
     try {
       final String finalFileName = String
-          .format("%s/%s.mt", RuntimeUtil.getRunningPath(), assetCode);
+          .format("%s/%s.mt", RuntimeUtil.getRunningPath(), assetId);
       final String shadowFile = String
-          .format("%s/%s.mt.mid", RuntimeUtil.getRunningPath(), assetCode);
+          .format("%s/%s.mt.mid", RuntimeUtil.getRunningPath(), assetId);
 
       BufferedWriter bw = Files.newWriter(new File(shadowFile), Charset.forName("UTF-8"));
-      bw.write(assetCode);
+      bw.write(assetId);
       bw.newLine();
-      bw.write(url);
+      bw.write(committer);
+      bw.newLine();
+      bw.write(content);
       bw.flush();
       bw.close();
       Files.move(new File(shadowFile), new File(finalFileName));
     } catch (IOException e) {
       throw new MagicException(i18nResource.getException("e0002"));
     }
-    return assetCode;
+    return assetId;
   }
 }

@@ -9,23 +9,23 @@ import lombok.Getter;
 @Getter
 public enum OperationType {
   //Query
-  Q('Q'),
+  Q("Q+"),
 
   // Get
-  G('G'),
+  G("G+"),
 
   // Help
-  H('H');
+  H("H+");
 
-  char operation;
+  String operation;
 
-  OperationType(char ch) {
+  OperationType(String ch) {
     this.operation = ch;
   }
 
-  public static OperationType of(char ch) {
+  public static OperationType of(String ch) {
     for (OperationType operationType : OperationType.values()) {
-      if (ch == operationType.getOperation()) {
+      if (operationType.getOperation().equalsIgnoreCase(ch)) {
         return operationType;
       }
     }

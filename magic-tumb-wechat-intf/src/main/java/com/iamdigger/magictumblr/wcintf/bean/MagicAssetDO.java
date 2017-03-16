@@ -16,10 +16,11 @@ public class MagicAssetDO {
 
   private Long id;
   private String assetId;
+  private String committer;
   private String videoCode;
   private String imageCode;
-  private String urlHash;
-  private String originalUrl;
+  private String assetHash;
+  private String assetContent;
   private Timestamp createTime;
   private Integer state;
 }
