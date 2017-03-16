@@ -95,20 +95,23 @@ public class WeChatAccessor {
           return i18nResource.getMessage("queryEmpty");
         }
         StringBuilder sb = new StringBuilder();
+        sb.append(i18nResource.getMessage("assetFoundTitle")).append("\n");
         for(MagicAssetDO magicAssetDO : magicAssetDOS) {
           AssetState state = AssetState.valueOf(magicAssetDO.getState());
           sb.append("\n");
-          sb.append(String.format(i18nResource.getMessage("assetResultTemplate"),
-              magicAssetDO.getCreateTime(), magicAssetDO.getAssetContent(), state.getDesc()));
+          sb.append(String.format(i18nResource.getMessage("assetFoundTime"), magicAssetDO.getCreateTime())).append("\n");
+          sb.append(String.format(i18nResource.getMessage("assetFoundContent"), magicAssetDO.getAssetContent())).append("\n");
+          sb.append(String.format(i18nResource.getMessage("assetFoundResult"), state.getDesc()));
           if(state == AssetState.SUCCESS) {
-            sb.append(String.format(i18nResource.getMessage("assetSurprise"), magicAssetDO.getVideoCode()));
+            sb.append("\n").append(String.format(i18nResource.getMessage("assetFoundSurprise"), magicAssetDO.getVideoCode())).append("\n");
           }
+          sb.append("\n");
         }
-        return String.format(i18nResource.getMessage("assetFound"), sb.toString());
+        return sb.toString();
       } else {
         // 非指令文本，直接写入文件，等待入库
         magicAssetFileService.saveToDisk(committer, inText);
-        return i18nResource.getMessage("contentReceived");
+        return i18nResource.getMessage("contentReceived1") + "\n" + i18nResource.getMessage("contentReceived2");
       }
 
 /*
@@ -159,6 +162,7 @@ public class WeChatAccessor {
       }
       return dispatchResult;*/
     } catch (RuntimeException re) {
+      logger.error("", re);
       if (re instanceof MagicException) {
         return ((MagicException) re).getErrorMsg();
       }
