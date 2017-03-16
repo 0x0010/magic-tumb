@@ -36,9 +36,12 @@ public class AssetCodeSpider {
       logger.info("Find {} init assets.", initAssets.size());
       for (MagicAssetDO initAsset : initAssets) {
         assetService.updateAssetState(initAsset.getId(), AssetState.PROCESSING.getState());
-        logger.info("Asset[{}] update state to [{}]", initAsset.getAssetContent(), AssetState.PROCESSING.getDesc());
-        executor.submit(new SpiderTask(initAsset.getId(), initAsset.getAssetContent(), assetService));
-        logger.info("Asset[{}] submit to MTE", initAsset.getAssetContent(), AssetState.PROCESSING.getDesc());
+        logger.info("Asset[{}] update state to [{}]", initAsset.getAssetContent(),
+            AssetState.PROCESSING.getDesc());
+        executor
+            .submit(new SpiderTask(initAsset.getId(), initAsset.getAssetContent(), assetService));
+        logger.info("Asset[{}] submit to MTE", initAsset.getAssetContent(),
+            AssetState.PROCESSING.getDesc());
       }
     }
   }
@@ -59,7 +62,6 @@ public class AssetCodeSpider {
     public void run() {
       AssetState state = AssetState.SUCCESS;
 
-
       // 是否url
       URL url = null;
       try {
@@ -68,7 +70,7 @@ public class AssetCodeSpider {
         state = AssetState.NOT_URL;
       }
 
-      if(null == url) {
+      if (null == url) {
         assetService.updateAssetState(id, state.getState());
         logger.info("Asset[{}] update state to [{}]", assetContent, state.getDesc());
         return;

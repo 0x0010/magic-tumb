@@ -28,11 +28,11 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpUtil {
 
-  private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
-
-  private static HttpClientBuilder httpClientBuilder = null;
-  private static RequestConfig rc = RequestConfig.custom().setSocketTimeout(10000).setConnectTimeout(5000).build();
   private static final Object LOCK = new Object();
+  private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+  private static HttpClientBuilder httpClientBuilder = null;
+  private static RequestConfig rc = RequestConfig.custom().setSocketTimeout(10000)
+      .setConnectTimeout(5000).build();
 
   private static HttpClientBuilder getBuilder() {
     if (null == httpClientBuilder) {
@@ -49,7 +49,7 @@ public class HttpUtil {
                 .setConnectionManager(connManager)
                 .disableCookieManagement()
                 .disableAutomaticRetries()
-            .setConnectionManagerShared(true);
+                .setConnectionManagerShared(true);
           } catch (Exception e) {
             logger.error("Create HttpClientBuilder failed", e);
           }
@@ -69,11 +69,13 @@ public class HttpUtil {
           java.security.cert.X509Certificate[] paramArrayOfX509Certificate,
           String paramString) throws CertificateException {
       }
+
       @Override
       public void checkServerTrusted(
           java.security.cert.X509Certificate[] paramArrayOfX509Certificate,
           String paramString) throws CertificateException {
       }
+
       @Override
       public java.security.cert.X509Certificate[] getAcceptedIssuers() {
         return null;
@@ -94,7 +96,8 @@ public class HttpUtil {
     } finally {
       try {
         httpClient.close();
-      } catch (IOException ignore){}
+      } catch (IOException ignore) {
+      }
     }
     return content;
   }

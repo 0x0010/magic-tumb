@@ -38,7 +38,8 @@ public class AssetFilesScanner {
     for (String assetFile : assetFiles) {
       BufferedReader reader = null;
       try {
-        Path assetFilePath = new File(String.format("%s/%s", RuntimeUtil.getRunningPath(), assetFile)).toPath();
+        Path assetFilePath = new File(
+            String.format("%s/%s", RuntimeUtil.getRunningPath(), assetFile)).toPath();
         reader = Files.newBufferedReader(assetFilePath, Charset.forName("UTF-8"));
         String assetId = reader.readLine();
         String committer = reader.readLine();

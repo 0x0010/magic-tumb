@@ -33,12 +33,10 @@ public class WeChatAccessor {
 
   private static Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of("GMT+8")));
   private static Logger logger = LoggerFactory.getLogger(WeChatAccessor.class);
-  @Resource(type = I18nResource.class)
-  private I18nResource i18nResource;
-
   @Resource
   MagicAssetService magicAssetService;
-
+  @Resource(type = I18nResource.class)
+  private I18nResource i18nResource;
   @Resource
   private MagicAssetFileService magicAssetFileService;
 
@@ -56,7 +54,8 @@ public class WeChatAccessor {
       TextMsg textReplyMsg = buildNoContentText(toUser, fromUser);
       switch (msgType) {
         case TEXT:
-          textReplyMsg.setContent(dispatchTextMsg(inTextMsg.getFromUserName(), inTextMsg.getContent()));
+          textReplyMsg
+              .setContent(dispatchTextMsg(inTextMsg.getFromUserName(), inTextMsg.getContent()));
           break;
         default:
           throw new RuntimeException("Unsupported message type");
@@ -89,21 +88,27 @@ public class WeChatAccessor {
     inText = inText.trim();
     try {
       // 查询
-      if(inText.equalsIgnoreCase("q")) {
+      if (inText.equalsIgnoreCase("q")) {
         List<MagicAssetDO> magicAssetDOS = magicAssetService.queryAssetByCommitter(committer, 0, 5);
-        if(null == magicAssetDOS || magicAssetDOS.size() <= 0) {
+        if (null == magicAssetDOS || magicAssetDOS.size() <= 0) {
           return i18nResource.getMessage("queryEmpty");
         }
         StringBuilder sb = new StringBuilder();
         sb.append(i18nResource.getMessage("assetFoundTitle")).append("\n");
-        for(MagicAssetDO magicAssetDO : magicAssetDOS) {
+        for (MagicAssetDO magicAssetDO : magicAssetDOS) {
           AssetState state = AssetState.valueOf(magicAssetDO.getState());
           sb.append("\n");
-          sb.append(String.format(i18nResource.getMessage("assetFoundTime"), magicAssetDO.getCreateTime())).append("\n");
-          sb.append(String.format(i18nResource.getMessage("assetFoundContent"), magicAssetDO.getAssetContent())).append("\n");
+          sb.append(String
+              .format(i18nResource.getMessage("assetFoundTime"), magicAssetDO.getCreateTime()))
+              .append("\n");
+          sb.append(String
+              .format(i18nResource.getMessage("assetFoundContent"), magicAssetDO.getAssetContent()))
+              .append("\n");
           sb.append(String.format(i18nResource.getMessage("assetFoundResult"), state.getDesc()));
-          if(state == AssetState.SUCCESS) {
-            sb.append("\n").append(String.format(i18nResource.getMessage("assetFoundSurprise"), magicAssetDO.getVideoCode())).append("\n");
+          if (state == AssetState.SUCCESS) {
+            sb.append("\n").append(String
+                .format(i18nResource.getMessage("assetFoundSurprise"), magicAssetDO.getVideoCode()))
+                .append("\n");
           }
           sb.append("\n");
         }
@@ -111,7 +116,8 @@ public class WeChatAccessor {
       } else {
         // 非指令文本，直接写入文件，等待入库
         magicAssetFileService.saveToDisk(committer, inText);
-        return i18nResource.getMessage("contentReceived1") + "\n" + i18nResource.getMessage("contentReceived2");
+        return i18nResource.getMessage("contentReceived1") + "\n" + i18nResource
+            .getMessage("contentReceived2");
       }
 
 /*
