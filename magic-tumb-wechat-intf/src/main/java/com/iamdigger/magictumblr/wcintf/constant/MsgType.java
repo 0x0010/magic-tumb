@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 public enum MsgType {
-  TEXT("text");
+  TEXT("text"), EVENT("event");
 
   String type;
 

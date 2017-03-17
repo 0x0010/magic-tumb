@@ -24,6 +24,9 @@ public class SerializeUtil {
           textXStream.aliasField("MsgType", TextMsg.class, "msgType");
           textXStream.aliasField("MsgId", TextMsg.class, "msgId");
           textXStream.aliasField("Content", TextMsg.class, "content");
+
+          textXStream.aliasField("Event", TextMsg.class, "event");
+          textXStream.aliasField("EventKey", TextMsg.class, "eventKey");
         }
       }
     }

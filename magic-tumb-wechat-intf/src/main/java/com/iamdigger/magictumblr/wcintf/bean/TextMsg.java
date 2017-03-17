@@ -20,4 +20,7 @@ public class TextMsg {
   private String msgType;
   private String content;
   private Long msgId;
+
+  private String event;
+  private String eventKey;
 }

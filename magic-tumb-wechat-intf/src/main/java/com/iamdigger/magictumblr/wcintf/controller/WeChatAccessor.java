@@ -46,16 +46,26 @@ public class WeChatAccessor {
     String replyMsg, fromUser = null, toUser = null;
     try {
       logger.info("Received Message:{}", requestBody);
+
       TextMsg inTextMsg = SerializeUtil.textFromXml(requestBody);
       fromUser = inTextMsg.getFromUserName();
       toUser = inTextMsg.getToUserName();
-      MsgType msgType = MsgType.fromType(inTextMsg.getMsgType());
 
+      MsgType msgType = MsgType.fromType(inTextMsg.getMsgType());
       TextMsg textReplyMsg = buildNoContentText(toUser, fromUser);
       switch (msgType) {
         case TEXT:
           textReplyMsg
               .setContent(dispatchTextMsg(inTextMsg.getFromUserName(), inTextMsg.getContent()));
+          break;
+
+        case EVENT:
+          if("subscribe".equals(inTextMsg.getEvent())) {
+            // 关注
+            textReplyMsg.setContent("欢迎关注魔法汤。");
+          } else {
+            textReplyMsg.setContent("不支持的事件");
+          }
           break;
         default:
           throw new RuntimeException("Unsupported message type");
