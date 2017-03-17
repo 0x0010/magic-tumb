@@ -89,7 +89,7 @@ public class WeChatAccessor {
     try {
       // 查询
       if (inText.equalsIgnoreCase("q")) {
-        List<MagicAssetDO> magicAssetDOS = magicAssetService.queryAssetByCommitter(committer, 0, 5);
+        List<MagicAssetDO> magicAssetDOS = magicAssetService.queryAssetByCommitter(committer, 0, 2);
         if (null == magicAssetDOS || magicAssetDOS.size() <= 0) {
           return i18nResource.getMessage("queryEmpty");
         }
@@ -104,7 +104,7 @@ public class WeChatAccessor {
           sb.append(String
               .format(i18nResource.getMessage("assetFoundContent"), magicAssetDO.getAssetContent()))
               .append("\n");
-          sb.append(String.format(i18nResource.getMessage("assetFoundResult"), state.getDesc()));
+          sb.append(String.format(i18nResource.getMessage("assetFoundResult"), state.randomDesc()));
           if (state == AssetState.SUCCESS) {
             sb.append("\n").append(String
                 .format(i18nResource.getMessage("assetFoundSurprise"), magicAssetDO.getVideoCode()))

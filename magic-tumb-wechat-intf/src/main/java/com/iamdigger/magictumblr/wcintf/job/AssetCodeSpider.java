@@ -37,11 +37,9 @@ public class AssetCodeSpider {
       for (MagicAssetDO initAsset : initAssets) {
         assetService.updateAssetState(initAsset.getId(), AssetState.PROCESSING.getState());
         logger.info("Asset[{}] update state to [{}]", initAsset.getAssetContent(),
-            AssetState.PROCESSING.getDesc());
-        executor
-            .submit(new SpiderTask(initAsset.getId(), initAsset.getAssetContent(), assetService));
-        logger.info("Asset[{}] submit to MTE", initAsset.getAssetContent(),
-            AssetState.PROCESSING.getDesc());
+            AssetState.PROCESSING.randomDesc());
+        executor.submit(new SpiderTask(initAsset.getId(), initAsset.getAssetContent(), assetService));
+        logger.info("Asset[{}] submit to MTE", initAsset.getAssetContent());
       }
     }
   }
@@ -72,7 +70,7 @@ public class AssetCodeSpider {
 
       if (null == url) {
         assetService.updateAssetState(id, state.getState());
-        logger.info("Asset[{}] update state to [{}]", assetContent, state.getDesc());
+        logger.info("Asset[{}] update state to [{}]", assetContent, state.randomDesc());
         return;
       }
 
@@ -93,7 +91,7 @@ public class AssetCodeSpider {
         logger.error(String.format("Parse URL[%s] failed.", url), e);
       }
       assetService.updateAssetState(id, state.getState());
-      logger.info("Asset[{}] update state to [{}]", url, state.getDesc());
+      logger.info("Asset[{}] update state to [{}]", url, state.randomDesc());
     }
   }
 }
