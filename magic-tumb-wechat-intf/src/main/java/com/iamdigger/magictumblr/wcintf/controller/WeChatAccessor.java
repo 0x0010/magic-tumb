@@ -45,10 +45,10 @@ public class WeChatAccessor {
   public String wechatPortal(@RequestBody String requestBody) {
     String replyMsg, fromUser = null, toUser = null;
     try {
+      logger.info("Received Message:{}", requestBody);
       TextMsg inTextMsg = SerializeUtil.textFromXml(requestBody);
       fromUser = inTextMsg.getFromUserName();
       toUser = inTextMsg.getToUserName();
-      logger.info("Received Message:{}", inTextMsg.toString());
       MsgType msgType = MsgType.fromType(inTextMsg.getMsgType());
 
       TextMsg textReplyMsg = buildNoContentText(toUser, fromUser);
