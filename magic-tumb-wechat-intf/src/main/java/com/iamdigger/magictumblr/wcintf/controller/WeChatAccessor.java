@@ -33,10 +33,13 @@ public class WeChatAccessor {
 
   private static Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of("GMT+8")));
   private static Logger logger = LoggerFactory.getLogger(WeChatAccessor.class);
+
   @Resource
   MagicAssetService magicAssetService;
+
   @Resource(type = I18nResource.class)
   private I18nResource i18nResource;
+
   @Resource
   private MagicAssetFileService magicAssetFileService;
 
@@ -62,7 +65,7 @@ public class WeChatAccessor {
         case EVENT:
           if("subscribe".equals(inTextMsg.getEvent())) {
             // 关注
-            textReplyMsg.setContent("欢迎关注魔法汤。");
+            textReplyMsg.setContent(subscribeWelcome());
           } else {
             textReplyMsg.setContent("不支持的事件");
           }
@@ -76,6 +79,13 @@ public class WeChatAccessor {
       replyMsg = sysErrorTextReply(toUser, fromUser);
     }
     return replyMsg;
+  }
+
+  private String subscribeWelcome() {
+    return
+        "好吧，我已然如此低调，还是被你找到了。嗯～，追求真理的道路上，想必客官跟我一样，时而疲惫，身心乏力，感觉身体被掏空。 "
+            + "出于对人类生命起源与进化的敬畏，魔法汤儿会不定期更新隐藏内容。\n"
+            + "来，别害羞，干了这碗汤！";
   }
 
   private TextMsg buildNoContentText(String fromUser, String toUser) {
