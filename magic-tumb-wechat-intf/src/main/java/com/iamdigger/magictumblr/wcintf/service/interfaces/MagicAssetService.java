@@ -20,4 +20,6 @@ public interface MagicAssetService {
   void updateAssetState(Long id, Integer state);
 
   void updateAssetVideoCode(Long id, String videoCode);
+
+  List<MagicAssetDO> queryTop5Asset();
 }

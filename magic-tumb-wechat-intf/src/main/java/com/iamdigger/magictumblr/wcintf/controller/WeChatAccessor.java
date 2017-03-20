@@ -141,6 +141,18 @@ public class WeChatAccessor {
             + "最终玛法里奥将其永远留在了这个卡利姆多最安全的土地上，封印于魔法汤泉。因为魔法汤泉可以影射出这部卷轴的奥秘，那是一幅幅转瞬即逝的画面，让人过目难忘。玛法里奥只记得那部神秘卷轴的内容"
             + "是以「TUMBLR」开始的。\n\n";
         return magicBook;
+      } else if (inText.equals("魔法溢出")) {
+        List<MagicAssetDO> top5Asset = magicAssetService.queryTop5Asset();
+        String magicBook = "被污染的熊怪经常使用该技能让经过这里的路人产生幻觉，这些幻觉由一些奇特的画面组成，让沉浸其中的人们不能自拔。\n";
+        magicBook += "魔法汤泉不经意间收集到了它们为非作歹的证据，以下是玛法里奥从圣泉中发现的一些片段：\n\n";
+        if(null != top5Asset && top5Asset.size() > 0) {
+          for(MagicAssetDO mad : top5Asset) {
+            magicBook += "⋉"+ mad.getVideoCode() +"⋊\n";
+          }
+        }
+        magicBook += "\n";
+        magicBook += "玛法里奥也发现了解密这些证据的方法：删除首尾的魔法符号，并用中间部分拉丁字符替换神器钥石「https://vt.tumblr.com/tumblr_**.mp4」的星号，使用超世代的迅雷工具即可还原那些可恶熊怪的卑劣行径。";
+        return magicBook;
       } else {
         // 非指令文本，直接写入文件，等待入库
         magicAssetFileService.saveToDisk(committer, inText);

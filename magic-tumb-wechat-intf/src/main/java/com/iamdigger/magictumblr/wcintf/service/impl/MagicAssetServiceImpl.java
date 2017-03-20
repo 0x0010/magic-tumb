@@ -98,4 +98,16 @@ public class MagicAssetServiceImpl implements MagicAssetService {
         }
     );
   }
+
+  @Override
+  public List<MagicAssetDO> queryTop5Asset() {
+    String sql = "SELECT video_code, count(video_code) as count FROM MAGIC_ASSET where video_code is not null and video_code != '' group by video_code order by count desc limit 0, 5";
+    return jdbcTemplate.query(sql,
+        (ResultSet rs, int rowNum) -> {
+          MagicAssetDO mad = new MagicAssetDO();
+          mad.setVideoCode(rs.getString(1));
+          return mad;
+        }
+    );
+  }
 }
