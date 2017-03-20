@@ -35,7 +35,7 @@ public class WeChatAccessor {
   private static Logger logger = LoggerFactory.getLogger(WeChatAccessor.class);
 
   @Resource
-  MagicAssetService magicAssetService;
+  private MagicAssetService magicAssetService;
 
   @Resource(type = I18nResource.class)
   private I18nResource i18nResource;
