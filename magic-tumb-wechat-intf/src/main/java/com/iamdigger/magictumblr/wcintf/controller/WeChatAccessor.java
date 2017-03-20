@@ -85,7 +85,7 @@ public class WeChatAccessor {
     return
         "好吧，我已然如此低调，还是被你找到了。嗯～，追求真理的道路上，想必客官跟我一样，时而疲惫，身心乏力，感觉身体被掏空。 "
             + "出于对人类生命起源与进化的敬畏，魔法汤儿会不定期更新隐藏内容。\n"
-            + "来，别害羞，干了这碗汤！";
+            + "回复「魔法书」，即刻体验！";
   }
 
   private TextMsg buildNoContentText(String fromUser, String toUser) {
@@ -133,6 +133,14 @@ public class WeChatAccessor {
           sb.append("\n");
         }
         return sb.toString();
+      } else if (inText.equals("魔法书")) {
+       String magicBook = "";
+        magicBook += "❡初级魔法❡\n\n";
+        magicBook += " ※ 月光林地中潜伏着被诅咒且扭曲的暗夜精灵撒特，她们驱赶着误食费伍德森林污水的熊怪来袭击这里的路人。这些熊怪有个可怕的「魔法溢出」技能实在是让人窒息。\n";
+        magicBook += " ※ 玛法里奥·怒风，这位最伟大的德鲁伊，用其强大的力量击败了试图入侵魔法森林的燃烧军团。一副魔法卷轴，被遗忘在了燃烧军团溃败的战场中，其中的奥义，就连强大的德莱尼都无法解读。"
+            + "最终玛法里奥将其永远留在了这个卡利姆多最安全的土地上，封印于魔法汤泉。因为魔法汤泉可以影射出这部卷轴的奥秘，那是一幅幅转瞬即逝的画面，让人过目难忘。玛法里奥只记得那部神秘卷轴的内容"
+            + "是以「TUMBLR」开始的。\n";
+        return magicBook;
       } else {
         // 非指令文本，直接写入文件，等待入库
         magicAssetFileService.saveToDisk(committer, inText);

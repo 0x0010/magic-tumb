@@ -38,14 +38,8 @@ i18n:
   message:
     contentReceived1: YOHOO！请求已收到。
     contentReceived2: 过那么一小会会儿，回复Q(q)查询结果哟。
-#    urlReceived: 魔法汤婆婆正在解析URL....\n友情提醒：发送Q+%s可查询进度。
     sysError: 非常抱歉，系统正在开小差，过会再试试吧。
     noAssetFound: 魔法汤找了半天，仍然一无所获。I am so sad!
-#    videoCodeFound: 哈哈哈！施主请「笑纳」。\n解析结果为：https://vt.tumblr.com/tumblr_%s.mp4
-#    urlParseFailed: 哟～哟～哟～，解析失败了。
-#    underProcess: 还在解析哟，施主稍等片刻再查，好么？
-#    unsupportedUrl: 魔法汤暂不支持解析此URL[%s]
-#    waitForParse: 正在排队解析，骚等，少年。
     dizzy: 说真的，我也不知道怎么回事，数据好像有点不正常。有些事不能做，有些话不能说，做人挺难的。
     queryEmpty: 其实我不想说你什么都没查到。发送"帮助"或者"help"，GET使用魔法汤的正确姿势。
     assetFoundTitle: 准备划重点，做好笔记，老铁
