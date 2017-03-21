@@ -1,0 +1,1 @@
+ALTER TABLE magic_tumblr.`magic_asset` alter column `asset_content` VARCHAR(4000);

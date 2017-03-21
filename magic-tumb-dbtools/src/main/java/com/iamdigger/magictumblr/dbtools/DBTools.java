@@ -39,8 +39,10 @@ public class DBTools {
           init();
           break;
         case "execute":
-          execute("");
-          execute("1");
+          try {
+            execute();
+          } catch (Exception ignore) {ignore.printStackTrace();}
+
           break;
         default:
           System.out.println("Unknown operation specified");
@@ -108,7 +110,29 @@ public class DBTools {
     return ((str == null) || (str.length() == 0));
   }
 
-  private static void execute(String sqlFile) {
-    System.out.println(sqlFile);
+  private static void execute() throws Exception {
+    Statement statement = null;
+    Connection connection = null;
+    BufferedReader bufferedReader = null;
+    try {
+      connection = tryToGetConnection();
+      statement = connection.createStatement();
+      bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("./scripts.sql")));
+      String sqlLine;
+      while (null != (sqlLine = bufferedReader.readLine())) {
+        if (!isEmpty(sqlLine) && !sqlLine.trim().startsWith("--")) {
+          System.out.println(sqlLine);
+          statement.execute(sqlLine);
+        }
+      }
+    } finally {
+      if (null != statement) {
+        statement.close();
+      }
+      releaseConnection(connection);
+      if (null != bufferedReader) {
+        bufferedReader.close();
+      }
+    }
   }
 }
