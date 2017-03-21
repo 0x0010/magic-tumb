@@ -24,7 +24,7 @@ public class Top5AssetLoader {
   @Resource
   private Top5AssetCache top5AssetCache;
 
-  @Scheduled(cron = "0 0 */1 * * *")
+  @Scheduled(cron = "0 */5 * * * *")
   public void reloadTop5Asset() {
     try {
       top5AssetCache.reloadData(magicAssetService.queryTop5Asset());
