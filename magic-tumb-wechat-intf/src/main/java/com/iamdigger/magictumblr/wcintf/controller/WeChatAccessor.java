@@ -2,6 +2,7 @@ package com.iamdigger.magictumblr.wcintf.controller;
 
 import com.iamdigger.magictumblr.wcintf.bean.MagicAssetDO;
 import com.iamdigger.magictumblr.wcintf.bean.TextMsg;
+import com.iamdigger.magictumblr.wcintf.cache.Top5AssetCache;
 import com.iamdigger.magictumblr.wcintf.constant.AssetState;
 import com.iamdigger.magictumblr.wcintf.constant.I18nResource;
 import com.iamdigger.magictumblr.wcintf.constant.MsgType;
@@ -12,6 +13,7 @@ import com.iamdigger.magictumblr.wcintf.utils.SerializeUtil;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
@@ -42,6 +44,9 @@ public class WeChatAccessor {
 
   @Resource
   private MagicAssetFileService magicAssetFileService;
+
+  @Resource
+  private Top5AssetCache top5AssetCache;
 
   @RequestMapping(value = "/wechat/intf", method = RequestMethod.POST)
   @ResponseBody
@@ -142,12 +147,12 @@ public class WeChatAccessor {
                 + "最终玛法里奥将其永远留在了这个卡利姆多最安全的土地上，封印于魔法汤泉。因为魔法汤泉可以影射出这部卷轴的奥秘，那是一幅幅转瞬即逝的画面，让人过目难忘。";
         return magicBook;
       } else if (inText.equals("蛮力猛击")) {
-        List<MagicAssetDO> top5Asset = magicAssetService.queryTop5Asset();
         String magicBook = " ❡ 被污染的熊怪经常使用该技能让经过这里的路人产生幻觉，这些幻觉由一些奇特的画面组成，让沉浸其中的人们不能自拔。\n";
         magicBook += "❡ 魔法汤泉不经意间收集到了它们为非作歹的证据，以下是玛法里奥从圣泉中发现的一些片段：\n\n";
+        Set<String> top5Asset = top5AssetCache.getDataSet();
         if (null != top5Asset && top5Asset.size() > 0) {
-          for (MagicAssetDO mad : top5Asset) {
-            magicBook += "⋉" + mad.getVideoCode() + "⋊\n";
+          for (String asset : top5Asset) {
+            magicBook += "⋉" + asset + "⋊\n";
           }
         }
         magicBook += "\n";

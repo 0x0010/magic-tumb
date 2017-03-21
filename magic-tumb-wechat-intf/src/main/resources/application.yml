@@ -6,7 +6,7 @@ server:
 logging:
   level:
     root: info
-    #org.springframework.jdbc: debug
+#    org.springframework.jdbc: debug
   file: ${spring.application.name}.log
 spring:
   application:

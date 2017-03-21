@@ -29,7 +29,7 @@ public class AssetCodeSpider {
   @Resource
   private MagicAssetService assetService;
 
-  @Scheduled(fixedDelay = 1000)
+  @Scheduled(fixedDelay = 1500)
   public void scheduleInitAsset() {
     List<MagicAssetDO> initAssets = assetService.queryAsset(AssetState.INIT.getState(), 0, 5);
     if (null != initAssets && initAssets.size() > 0) {
