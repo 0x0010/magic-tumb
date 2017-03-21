@@ -141,7 +141,7 @@ public class WeChatAccessor {
             " ❡ 玛法里奥·怒风，这位最伟大的德鲁伊，用其强大的力量击败了试图入侵魔法森林的燃烧军团。一副魔法卷轴，被遗忘在了燃烧军团溃败的战场中，其中的奥义，就连强大的德莱尼都无法解读。"
                 + "最终玛法里奥将其永远留在了这个卡利姆多最安全的土地上，封印于魔法汤泉。因为魔法汤泉可以影射出这部卷轴的奥秘，那是一幅幅转瞬即逝的画面，让人过目难忘。";
         return magicBook;
-      } else if (inText.equals("魔法溢出")) {
+      } else if (inText.equals("蛮力猛击")) {
         List<MagicAssetDO> top5Asset = magicAssetService.queryTop5Asset();
         String magicBook = " ❡ 被污染的熊怪经常使用该技能让经过这里的路人产生幻觉，这些幻觉由一些奇特的画面组成，让沉浸其中的人们不能自拔。\n";
         magicBook += "❡ 魔法汤泉不经意间收集到了它们为非作歹的证据，以下是玛法里奥从圣泉中发现的一些片段：\n\n";
