@@ -159,7 +159,7 @@ public class WeChatAccessor {
         return magicBook;
       } else if (inText.equals("艾露恩的祝福")) {
         String aluen = " ❡ 月神湖浩淼庞大，它位于月光林地的中心。波光粼粼的水面就像是满天星光映衬下的月色，于是人们赋予了它这个充满传奇色彩的名字。也许湖水得到过「艾露恩的祝福」，从而成为最为纯净和健康的水源之一。\n\n";
-        aluen += " ❡ 删除首尾的魔法符号，并用中间部分拉丁字符替换神器钥石「https://vt.tumblr.com/tumblr_**.mp4」的星号，辅以超世代的迅雷获取可以还原那些熊怪的卑劣行径。\n\n";
+        aluen += " ❡ 删除首尾的魔法符号，并用中间部分拉丁字符替换神器钥石「https://vt.tumblr.com/tumblr_**.mp4」的星号，辅以超世代的迅雷或许可以还原那些熊怪的卑劣行径。\n\n";
         return aluen;
       } else {
         // 非指令文本，直接写入文件，等待入库
