@@ -13,7 +13,6 @@ import com.iamdigger.magictumblr.wcintf.utils.SerializeUtil;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 import java.util.TimeZone;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
@@ -149,7 +148,7 @@ public class WeChatAccessor {
       } else if (inText.equals("蛮力猛击")) {
         String magicBook = " ❡ 被污染的熊怪经常使用该技能让经过这里的路人产生幻觉，这些幻觉由一些奇特的画面组成，让沉浸其中的人们不能自拔。\n";
         magicBook += "❡ 魔法汤泉不经意间收集到了它们为非作歹的证据，以下是玛法里奥从圣泉中发现的一些片段：\n\n";
-        Set<String> top5Asset = top5AssetCache.getDataSet();
+        List<String> top5Asset = top5AssetCache.getDataSet();
         if (null != top5Asset && top5Asset.size() > 0) {
           for (String asset : top5Asset) {
             magicBook += "⋉" + asset + "⋊\n";

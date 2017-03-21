@@ -3,9 +3,8 @@ package com.iamdigger.magictumblr.wcintf.cache;
 import com.iamdigger.magictumblr.wcintf.bean.MagicAssetDO;
 import com.iamdigger.magictumblr.wcintf.service.interfaces.MagicAssetService;
 import com.iamdigger.magictumblr.wcintf.utils.RuntimeUtil;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
@@ -22,14 +21,14 @@ public class Top5AssetCache {
   private static Logger logger = LoggerFactory.getLogger(Top5AssetCache.class);
   private static volatile boolean isReloading = false;
 
-  private Set<String> backupData = new HashSet<>(5);
-  private Set<String> data = new HashSet<>(5);
+  private List<String> backupData = new ArrayList<>(5);
+  private List<String> data = new ArrayList<>(5);
 
   @Resource
   private MagicAssetService magicAssetService;
 
-  public Set<String> getDataSet() {
-    if(isReloading) {
+  public List<String> getDataSet() {
+    if (isReloading) {
       return backupData;
     }
     return data;
@@ -39,8 +38,8 @@ public class Top5AssetCache {
     backupData = data;
     isReloading = true;
     data.clear();
-    if(null != top5Mad) {
-      for(MagicAssetDO mad : top5Mad) {
+    if (null != top5Mad) {
+      for (MagicAssetDO mad : top5Mad) {
         data.add(mad.getVideoCode());
       }
     }
@@ -50,7 +49,8 @@ public class Top5AssetCache {
   @PostConstruct
   public void cacheStartup() {
     reloadData(magicAssetService.queryTop5Asset());
-    logger.info("Top 5 asset has been loaded into memory while startup, content [{}] @ [{}]", getDataSet(),
+    logger.info("Top 5 asset has been loaded into memory while startup, content [{}] @ [{}]",
+        getDataSet(),
         RuntimeUtil.getCurrentDateTime());
   }
 }
