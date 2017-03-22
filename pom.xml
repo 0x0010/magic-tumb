@@ -38,6 +38,12 @@
         <artifactId>guava</artifactId>
         <version>LATEST</version>
       </dependency>
+
+      <dependency>
+        <groupId>com.qiniu</groupId>
+        <artifactId>qiniu-java-sdk</artifactId>
+        <version>7.2.5</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

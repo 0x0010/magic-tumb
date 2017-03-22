@@ -16,11 +16,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
  */
 @EnableAutoConfiguration
 @ComponentScans(value = {
-    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.controller"),
-    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.constant"),
-    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.service"),
-    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.job"),
-    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf.cache")
+    @ComponentScan(value = "com.iamdigger.magictumblr.wcintf")
 })
 @EnableScheduling
 public class Application {
@@ -33,7 +29,7 @@ public class Application {
   public Executor taskScheduler() {
     ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
     scheduler.setThreadNamePrefix("MTS");
-    scheduler.setPoolSize(3);
+    scheduler.setPoolSize(4);
     return scheduler;
   }
 
