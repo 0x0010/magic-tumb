@@ -42,8 +42,8 @@ qiniu:
   enableBackup: false
   dbUrl: ${spring.datasource.tomcat.url}
   bucket: usholywell
-  accessKey: **
-  secretKey: **
+  accessKey: xxxx
+  secretKey: xxxx
 
 
 i18n:
