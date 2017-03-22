@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 @ConfigurationProperties(prefix = "qiniu")
 public class QiniuAccess {
+
   private Boolean enableBackup;
   private String dbUrl;
   private String bucket;

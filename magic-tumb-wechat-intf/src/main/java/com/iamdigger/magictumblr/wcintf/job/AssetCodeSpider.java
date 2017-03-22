@@ -38,7 +38,8 @@ public class AssetCodeSpider {
         assetService.updateAssetState(initAsset.getId(), AssetState.PROCESSING.getState());
         logger.info("Asset[{}] update state to [{}]", initAsset.getAssetContent(),
             AssetState.PROCESSING.randomDesc());
-        executor.submit(new SpiderTask(initAsset.getId(), initAsset.getAssetContent(), assetService));
+        executor
+            .submit(new SpiderTask(initAsset.getId(), initAsset.getAssetContent(), assetService));
         logger.info("Asset[{}] submit to MTE", initAsset.getAssetContent());
       }
     }

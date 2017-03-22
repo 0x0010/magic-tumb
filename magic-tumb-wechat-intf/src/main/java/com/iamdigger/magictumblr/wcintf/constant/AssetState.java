@@ -19,21 +19,13 @@ public enum AssetState {
   UNSUPPORTED_URL(5, new String[]{"暂不支持此URL的解析，你懂的。", "反正是什么都没发现。", "内容简直是一片空白，毫无价值。"}),
   NOT_URL(6, new String[]{"别逗，这就不是个URL！", "记住，URL一般以http或者https开头。"});
 
+  static ThreadLocal<Random> threadLocalRandom = new ThreadLocal<>();
   Integer state;
   List<String> desc;
-
-  static ThreadLocal<Random> threadLocalRandom = new ThreadLocal<>();
 
   AssetState(Integer state, String[] desc) {
     this.state = state;
     this.desc = Arrays.asList(desc);
-  }
-
-  public String randomDesc() {
-    if(null == threadLocalRandom.get()) {
-      threadLocalRandom.set(new Random());
-    }
-    return desc.get(threadLocalRandom.get().nextInt(desc.size()));
   }
 
   public static AssetState valueOf(Integer state) {
@@ -43,5 +35,12 @@ public enum AssetState {
       }
     }
     throw new RuntimeException("Invalid state " + state);
+  }
+
+  public String randomDesc() {
+    if (null == threadLocalRandom.get()) {
+      threadLocalRandom.set(new Random());
+    }
+    return desc.get(threadLocalRandom.get().nextInt(desc.size()));
   }
 }
